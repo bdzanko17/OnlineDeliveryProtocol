@@ -7,10 +7,10 @@ app.use(express.static(__dirname + '/client'))
 
 io.on('connection', (socket) => {
     console.log('a user is connected')
-
     socket.on('chat message', (msg) => {
         console.log('message: ' + msg);
       });
+    
 
 
 
@@ -19,6 +19,7 @@ io.on('connection', (socket) => {
     });
 
 })
+
 
 http.listen(3000, () => {
     console.log('listening on *:3000');
