@@ -8,4 +8,5 @@ form.addEventListener('submit', function(e) {
     socket.emit('chat message', input.value);
     input.value = '';
   }
+  
 });
