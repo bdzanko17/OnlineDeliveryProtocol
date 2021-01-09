@@ -5,6 +5,17 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 app.use(express.static(__dirname + '/client'))
 
+
+app.get('/login', (req, res) => {
+
+  res.sendFile(__dirname + '/client/login.html');
+});
+
+app.get('/register', (req, res) => {
+
+  res.sendFile(__dirname + '/client/register.html');
+});
+
 io.on('connection', (socket) => {
     console.log('a user is connected')
 
