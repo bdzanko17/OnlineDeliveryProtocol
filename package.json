@@ -1,15 +1,31 @@
 {
-    "name": "socket-chat-example",
-    "version": "0.0.1",
-    "description": "my first socket.io app",
-    "scripts": {
-        "start": "nodemon server.js"
-    },
-    "dependencies": {
-        "bcrypt": "^5.0.0",
-        "express": "^4.17.1",
-        "mongoose": "^5.11.11",
-        "nodemon": "^2.0.7",
-        "socket.io": "^3.0.5"
-    }
+  "name": "socket-chat-example",
+  "version": "0.0.1",
+  "description": "my first socket.io app",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.11",
+    "socket.io": "^3.0.5"
+  },
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdzanko17/OnlineDeliveryProtocol.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bdzanko17/OnlineDeliveryProtocol/issues"
+  },
+  "homepage": "https://github.com/bdzanko17/OnlineDeliveryProtocol#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }

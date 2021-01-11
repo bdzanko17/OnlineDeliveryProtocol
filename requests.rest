@@ -1,0 +1,27 @@
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVmZmMzNWQ4NjU5YTI0MzIxMDJmZWQ5NSIsIm5hbWUiOiJIYXJpcyIsImVtYWlsIjoiaHRhcmFoaWphMTExQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJGpxSWRzOUhMcGF3WGFDay5BZnFSd3VlVVo3a0t1L2dVSXlzalhad1hJVk5WYmhRaUZiNWdLIiwiX192IjowfSwiaWF0IjoxNjEwMzY1NzQ3fQ.4VMBG3skOcXkTslv9p5--oSiYUINTTz7v9oaaJvhpos
+
+###
+
+POST http://localhost:3000/login
+Content-Type : application/json
+
+        {
+        "name": "Haris",
+        "email": "htarahija111@gmail.com",
+        "password": "hare1"
+        }
+
+
+###
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "user":
+        {
+        "name": "Haris",
+        "email": "htarahija111@gmail.com",
+        "password": "hare1"
+        }
+}
