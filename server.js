@@ -13,7 +13,7 @@ var bcrypt = require("bcrypt");
 
 const users = require("./models/users");
 const { schema } = require("./models/users");
-//Povezivanje sa bazom
+// Povezivanje sa bazom
 try {
     mongoose.connect(
       uri,
@@ -37,13 +37,15 @@ io.on('connection', (socket) => {
 })
 
 //Localhost:3000/createItem da kao admin kreira item
-app.get("/createItem",(req,res)=>{
-    var item = new items({name :"cevapi",
-    count:10})
+app.post("/createItem", authenticateToken, (req,res)=>{
+  if(req.user.user.role === 'admin'){
+    var item = new items(req.body.item)
+    console.log(req.body)
     item.save((err, doc) => {
         if (err) console.log(err);
         console.log("Succesefully inserted item");
     });
+  }else return res.status(500)
 })
 
 app.post("/register", async (req,res) => {
@@ -59,7 +61,6 @@ app.post("/register", async (req,res) => {
 
 
 app.get('/posts', authenticateToken, async (req,res) => {
-  console.log(req.user)
   const user = await users.findOne({email: req.user.email})
   return res.status(200).json(user)
 })
@@ -85,11 +86,10 @@ function authenticateToken(req, res, next){
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if(err) return res.sendStatus(403)
     req.user = user
-    console.log('AAAAA')
-    console.log(req.user)
     next()
   })
 }
+
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
