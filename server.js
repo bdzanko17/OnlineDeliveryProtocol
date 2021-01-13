@@ -7,6 +7,8 @@ app.use(express.static(__dirname + '/client'))
 var mongoose = require("mongoose");
 const uri = "mongodb+srv://bdzanko1:PzrHmyh4OjcCabeP@cluster0.s4065.mongodb.net/baza?retryWrites=true&w=majority";
 var items = require("./models/items")
+var orders = require("./models/orders")
+var orderItems = require("./models/orderItems")
 const jwt = require('jsonwebtoken');
 app.use(express.json())
 var bcrypt = require("bcrypt");
@@ -51,6 +53,11 @@ app.post("/createItem", authenticateToken, (req, res) => {
   } else return res.status(500)
 })
 
+app.get("/getItems",async (req,res)=>{
+  console.log("OK")
+ return res.json(await items.find())
+})
+
 app.post("/register", async (req, res) => {
   var user = new users(req.body)
   user.password = users.hashPassword(user.password)
@@ -62,6 +69,23 @@ app.post("/register", async (req, res) => {
   return res.status(200).json(user)
 })
 
+app.post("/makeOrder",authenticateToken, async (req,res)=>{
+    const user = req.user.user;
+    const order = new orders(req.body.order)
+    order.user = user;
+    const item = await items.find()
+    const orderItem = new orderItems({"quantity":10})
+    orderItem.item=item[1];
+    orderItem.order=order;
+    console.log({orderItem})
+    order.save((err,res)=>{
+      if(err) throw err
+    })
+    orderItem.save((err,res)=>{
+      if(err) throw err
+    })
+
+})
 
 app.get('/posts', authenticateToken, async (req, res) => {
   const user = await users.findOne({ email: req.user.user.email })
@@ -76,7 +100,7 @@ app.post('/login', async (req, res) => {
   const user = await users.findOne({ email: req.body.email })
   const pw = users.hashPassword(req.body.password)
   if (user.isValid(req.body.password)) {
-    const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET)
+    const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET,{expiresIn:"1h"})
     res.cookie('token', token, { httpOnly: true });
     res.json({ token, user });
     console.log('DA')
@@ -91,11 +115,10 @@ app.get('/logout', (req, res) => {
 
 
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-  if (token == null) return res.sendStatus(401)
+
   const token_2 = req.cookies.token
-  console.log(token_2)
+  if (token_2 == null) return res.sendStatus(401)
+
   jwt.verify(token_2, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403)
     req.user = user

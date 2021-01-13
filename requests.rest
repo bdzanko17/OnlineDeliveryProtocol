@@ -30,13 +30,29 @@ Content-Type: application/json
 
 ###
 POST http://localhost:3000/createItem
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVmZmM0NTRhODU0NWRkMWJlMGM3ZjBhMSIsIm5hbWUiOiJIYXJpcyIsImVtYWlsIjoiaHRhcmFoaWphMTIzNDVAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkR3VENS5tc3VsZHNKREdZZGxZc3dFZTFzdjd3N2YuVHRXM2s5czN6Qy9PS1ZaR2s3NmRvMTYiLCJyb2xlIjoiYWRtaW4iLCJfX3YiOjB9LCJpYXQiOjE2MTAzNjkxOTN9.lFX2eAGEG_dlr86N51Rsqo7wdQxHIM6QbvIYqbdfmy8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVmZmM0NTRhODU0NWRkMWJlMGM3ZjBhMSIsIm5hbWUiOiJIYXJpcyIsImVtYWlsIjoiaHRhcmFoaWphMTIzNDVAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkR3VENS5tc3VsZHNKREdZZGxZc3dFZTFzdjd3N2YuVHRXM2s5czN6Qy9PS1ZaR2s3NmRvMTYiLCJyb2xlIjoiYWRtaW4iLCJfX3YiOjB9LCJpYXQiOjE2MTA1NjU5NTl9.gDefQxTiybY8RpGo3kYymhJSmKpu42OIMdtQ-nXROoI
 Content-Type: application/json
 
 {
     "item":
     {
         "name": "Durex",
-        "count": 1
+        "count": 1,
+        "price":100,
+        "description":1000
+    }
+}
+
+###
+
+POST http://localhost:3000/makeOrder
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVmZmM0NTRhODU0NWRkMWJlMGM3ZjBhMSIsIm5hbWUiOiJIYXJpcyIsImVtYWlsIjoiaHRhcmFoaWphMTIzNDVAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkR3VENS5tc3VsZHNKREdZZGxZc3dFZTFzdjd3N2YuVHRXM2s5czN6Qy9PS1ZaR2s3NmRvMTYiLCJyb2xlIjoiYWRtaW4iLCJfX3YiOjB9LCJpYXQiOjE2MTA1NjczNTUsImV4cCI6MTYxMDU3MDk1NX0.l_5v3dSKWTfnoVJ_trhqvRZkar3Vh0VcefEdtVjcG-Q
+
+Content-Type: application/json
+
+{
+    "order":
+    {
+        "message":"ovo je poruka"
     }
 }
