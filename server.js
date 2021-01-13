@@ -64,7 +64,8 @@ app.post("/register", async (req,res) => {
 
 
 app.get('/posts', authenticateToken, async (req,res) => {
-  const user = await users.findOne({email: req.user.email})
+  const user = await users.findOne({email: req.user.user.email})
+  console.log(req.user.user)
   return res.status(200).json(user)
 })
 
@@ -77,10 +78,17 @@ app.post('/login', async (req,res) => {
   if(user.isValid(req.body.password)){
     const token = jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET)
     res.cookie('token', token, { httpOnly: true });
-    res.json({ token });
+    res.json({ token, user});
     console.log('DA')
   }else return res.status(500)
 })
+
+
+app.get('/logout', (req,res) => {
+    res.cookie('token', null, {httpOnly: true});
+    res.json({'OK': 'OK'});
+})
+
 
 function authenticateToken(req, res, next){
   const authHeader = req.headers['authorization']
