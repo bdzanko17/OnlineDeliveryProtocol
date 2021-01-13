@@ -18,43 +18,43 @@ var cookieParser = require("cookie-parser");
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 try {
-    mongoose.connect(
-      uri,
-      { useNewUrlParser: true, useUnifiedTopology: true }
-    );
-    console.log("Connected to db :)")
-  } catch (error) {
-    console.log(error);
-  }
+  mongoose.connect(
+    uri,
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  );
+  console.log("Connected to db :)")
+} catch (error) {
+  console.log(error);
+}
 
 
 io.on('connection', (socket) => {
-    console.log('a user is connected')
-    socket.on('chat message', (msg) => {
-        console.log('message: ' + msg);
-      });
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
+  console.log('a user is connected')
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+  });
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 
 })
 
 //Localhost:3000/createItem da kao admin kreira item
-app.post("/createItem", authenticateToken, (req,res)=>{
-  if(req.user.user.role === 'admin'){
+app.post("/createItem", authenticateToken, (req, res) => {
+  if (req.user.user.role === 'admin') {
     var item = new items(req.body.item)
     console.log(req.body)
     item.save((err, doc) => {
-        if (err) console.log(err);
-        console.log("Succesefully inserted item");
+      if (err) console.log(err);
+      console.log("Succesefully inserted item");
     });
-  }else return res.status(500)
+  } else return res.status(500)
 })
 
-app.post("/register", async (req,res) => {
-  var user = new users(req.body.user)
-  user.password= users.hashPassword(user.password)
-  if(await users.exists({email: user.email})) return res.status(500).send('error')
+app.post("/register", async (req, res) => {
+  var user = new users(req.body)
+  user.password = users.hashPassword(user.password)
+  if (await users.exists({ email: user.email })) return res.status(500).send('error')
   user.save((err, doc) => {
     if (err) console.log(err);
     console.log("Succesefully registered user");
@@ -63,41 +63,41 @@ app.post("/register", async (req,res) => {
 })
 
 
-app.get('/posts', authenticateToken, async (req,res) => {
-  const user = await users.findOne({email: req.user.user.email})
+app.get('/posts', authenticateToken, async (req, res) => {
+  const user = await users.findOne({ email: req.user.user.email })
   console.log(req.user.user)
   return res.status(200).json(user)
 })
 
 
 //Login
-app.post('/login', async (req,res) => {
+app.post('/login', async (req, res) => {
   // Pristup useru 
-  const user = await users.findOne({email: req.body.email})
+  const user = await users.findOne({ email: req.body.email })
   const pw = users.hashPassword(req.body.password)
-  if(user.isValid(req.body.password)){
-    const token = jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET)
+  if (user.isValid(req.body.password)) {
+    const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET)
     res.cookie('token', token, { httpOnly: true });
-    res.json({ token, user});
+    res.json({ token, user });
     console.log('DA')
-  }else return res.status(500)
+  } else return res.status(500)
 })
 
 
-app.get('/logout', (req,res) => {
-    res.cookie('token', null, {httpOnly: true});
-    res.json({'OK': 'OK'});
+app.get('/logout', (req, res) => {
+  res.cookie('token', null, { httpOnly: true });
+  res.json({ 'OK': 'OK' });
 })
 
 
-function authenticateToken(req, res, next){
+function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
-  if(token == null) return res.sendStatus(401)
+  if (token == null) return res.sendStatus(401)
   const token_2 = req.cookies.token
   console.log(token_2)
   jwt.verify(token_2, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if(err) return res.sendStatus(403)
+    if (err) return res.sendStatus(403)
     req.user = user
     next()
   })
