@@ -16,6 +16,7 @@ var cors = require("cors");
 const users = require("./models/users");
 const { schema } = require("./models/users");
 var cookieParser = require("cookie-parser");
+var  count =0;
 // Povezivanje sa bazom
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
@@ -54,7 +55,7 @@ app.post("/createItem", authenticateToken, (req, res) => {
 })
 
 app.get("/getItems",async (req,res)=>{
-  console.log("OK")
+  console.log(count++)
  return res.json(await items.find())
 })
 
